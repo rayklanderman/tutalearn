@@ -36,117 +36,134 @@ TutaLearn is a Progressive Web App (PWA) that brings AI-powered, culturally rele
 - Cached educational content
 - Mobile-optimized interface
 
-## 🛠 Tech Stack
+## 📱 PWA Features
 
-- **Frontend**: React 18 + TypeScript + Vite
-- **Styling**: Tailwind CSS
-- **Backend**: Supabase (PostgreSQL + Edge Functions)
-- **PWA**: Vite PWA Plugin
-- **AI**: Groq API
-- **WhatsApp**: WhatsApp Business API
-- **Deployment**: Vercel
-- **Icons**: Lucide React
+TutaLearn is designed as a Progressive Web App with:
 
-## 🚀 Getting Started
+- **Offline Functionality**: Cached lessons and user progress
+- **App-like Experience**: Can be installed on mobile home screens
+- **Background Sync**: Syncs data when connection is restored
+- **Push Notifications**: (Coming soon) Lesson reminders and updates
 
-### Prerequisites
+## 🌍 Cultural Localization
 
-- Node.js 18+
-- npm or yarn
-- Supabase account
-- WhatsApp Business API access (for production)
+We adapt educational content to African contexts by:
 
-### Installation
+- Using local examples (maize farming for math, African wildlife for science)
+- Incorporating Swahili language alongside English
+- Referencing familiar cultural practices and environments
+- Aligning with African educational curricula
 
-1. **Clone the repository**
+## 🚀 Quick Deploy to Vercel
 
-   ```powershell
-   git clone https://github.com/rayklanderman/tutalearn.git
-   cd tutalearn
-   ```
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rayklanderman/tutalearn.git&env=VITE_SUPABASE_URL,VITE_SUPABASE_ANON_KEY,VITE_GROQ_API_KEY)
 
-2. **Install dependencies**
+### Environment Variables Required:
 
-   ```powershell
-   npm install
-   ```
+- `VITE_SUPABASE_URL`: Your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY`: Your Supabase anonymous key
+- `VITE_GROQ_API_KEY`: Your Groq API key for AI responses
 
-3. **Environment Setup**
-   Create a `.env` file with your configurations:
+## 📊 Database Schema
 
-   ```env
-   VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-   VITE_GROQ_API_KEY=your_groq_api_key
-   ```
+### Users
 
-4. **Start development server**
-   ```powershell
-   npm run dev
-   ```
+- Profile information
+- Language preferences
+- Grade level
+- Learning progress
 
-### Build for Production
+### Lessons
+
+- Multi-language content
+- Difficulty levels
+- Subject categorization
+- Cultural adaptations
+
+### WhatsApp Chats
+
+- Message history
+- AI response tracking
+- User engagement metrics
+
+### User Progress
+
+- Lesson completion
+- Assessment scores
+- Time spent learning
+
+## 🛠 Development Workflow
+
+### Local Development
 
 ```powershell
+# Start development server
+npm run dev
+
+# Build for production
 npm run build
+
+# Preview production build
 npm run preview
+
+# Type checking
+npm run type-check
+
+# Lint and fix code
+npm run lint:fix
 ```
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Testing the PWA
 
-```js
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+1. Build the project: `npm run build`
+2. Serve it locally: `npm run preview`
+3. Open in Chrome DevTools
+4. Go to Application tab → Service Workers
+5. Check "Offline" to test offline functionality
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+### WhatsApp Integration Setup
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+1. Register WhatsApp Business API account
+2. Get phone number ID and access token
+3. Set up webhook pointing to your Supabase Edge Function
+4. Add environment variables to deployment
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🤝 Contributing
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+We welcome contributions! Areas where you can help:
 
-export default tseslint.config([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+- Content creation and localization
+- UI/UX improvements
+- WhatsApp integration enhancements
+- Educational game development
+- Translation work
+
+### Development Guidelines
+
+- Use TypeScript for all new code
+- Follow Tailwind CSS conventions for styling
+- Ensure mobile-first responsive design
+- Add proper error handling and loading states
+- Test offline functionality before submitting
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgments
+
+- African education advocates and teachers
+- Open-source educational content providers
+- Groq for AI capabilities
+- Supabase for backend infrastructure
+- The React and open-source communities
+
+## 🔗 Links
+
+- **Repository**: https://github.com/rayklanderman/tutalearn.git
+- **Live Demo**: Coming soon
+- **Supabase Project**: https://mnairnnovejrvgxzvktq.supabase.co
+
+---
+
+**Built with ❤️ for African education**

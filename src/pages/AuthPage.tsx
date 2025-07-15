@@ -1,10 +1,20 @@
 import { useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { Mail, Lock, User, GraduationCap, Globe } from "lucide-react";
+import { useNavigate, Link } from "react-router-dom";
+import {
+  Mail,
+  Lock,
+  User,
+  GraduationCap,
+  Globe,
+  BookOpen,
+  ArrowLeft,
+} from "lucide-react";
 
 export function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -23,6 +33,8 @@ export function AuthPage() {
         const { error } = await signIn(formData.email, formData.password);
         if (error) {
           alert(error.message);
+        } else {
+          navigate("/app");
         }
       } else {
         const { error } = await signUp(formData.email, formData.password, {
@@ -47,11 +59,23 @@ export function AuthPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary-50 to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">
+        {/* Back to Home */}
+        <div className="text-center">
+          <Link
+            to="/"
+            className="inline-flex items-center text-primary-600 hover:text-primary-700 transition-colors mb-4"
+          >
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Back to Home
+          </Link>
+        </div>
+
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-primary-600 mb-2">
-            TutaLearn
-          </h1>
+          <div className="flex items-center justify-center mb-4">
+            <BookOpen className="h-10 w-10 text-primary-600 mr-2" />
+            <h1 className="text-4xl font-bold text-primary-600">TutaLearn</h1>
+          </div>
           <p className="text-gray-600">
             Elimu kwa kila mtu - Education for everyone
           </p>
@@ -144,6 +168,7 @@ export function AuthPage() {
                         setFormData({ ...formData, gradeLevel: e.target.value })
                       }
                       className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      aria-label="Select grade level"
                     >
                       {Array.from({ length: 12 }, (_, i) => i + 1).map(
                         (grade) => (
@@ -171,6 +196,7 @@ export function AuthPage() {
                         })
                       }
                       className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      aria-label="Select preferred language"
                     >
                       <option value="en">English</option>
                       <option value="sw">Kiswahili</option>

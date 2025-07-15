@@ -141,3 +141,6 @@ export class GroqService {
     return examples[topic as keyof typeof examples]?.[language] || "";
   }
 }
+
+// Export a singleton instance
+export const groqService = new GroqService();
