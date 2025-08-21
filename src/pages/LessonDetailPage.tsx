@@ -37,36 +37,6 @@ export function LessonDetailPage() {
   const [showAiTutor, setShowAiTutor] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState<"en" | "sw">("en");
 
-  useEffect(() => {
-    const loadLesson = async () => {
-      if (!id) {
-        setError("Lesson ID not provided");
-        setLoading(false);
-        return;
-      }
-
-      try {
-        setLoading(true);
-        const lessonData = await contentService.getLesson(id);
-
-        if (!lessonData) {
-          setError("Lesson not found");
-        } else {
-          setLesson(lessonData);
-          // Auto-generate AI content when lesson loads
-          generateAiContent(lessonData);
-        }
-      } catch (err) {
-        console.error("Error loading lesson:", err);
-        setError("Failed to load lesson");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadLesson();
-  }, [id, generateAiContent]);
-
   // Generate AI-powered content for the lesson
   const generateAiContent = useCallback(
     async (lessonData: LessonContent) => {
@@ -130,6 +100,36 @@ export function LessonDetailPage() {
     },
     [selectedLanguage]
   );
+
+  useEffect(() => {
+    const loadLesson = async () => {
+      if (!id) {
+        setError("Lesson ID not provided");
+        setLoading(false);
+        return;
+      }
+
+      try {
+        setLoading(true);
+        const lessonData = await contentService.getLesson(id);
+
+        if (!lessonData) {
+          setError("Lesson not found");
+        } else {
+          setLesson(lessonData);
+          // Auto-generate AI content when lesson loads
+          generateAiContent(lessonData);
+        }
+      } catch (err) {
+        console.error("Error loading lesson:", err);
+        setError("Failed to load lesson");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadLesson();
+  }, [id, generateAiContent]);
 
   // Handle AI tutor chat
   const handleTutorQuestion = async () => {

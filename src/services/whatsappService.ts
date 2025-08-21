@@ -52,8 +52,19 @@ export class WhatsAppService {
   // Method to handle incoming webhook messages
   handleIncomingMessage(webhookData: Record<string, unknown>): WhatsAppMessage | null {
     try {
-      const message =
-        webhookData.entry?.[0]?.changes?.[0]?.value?.messages?.[0];
+      const entry = webhookData.entry as Array<{
+        changes: Array<{
+          value: {
+            messages: Array<{
+              from: string;
+              text?: { body: string };
+              type: string;
+            }>;
+          };
+        }>;
+      }>;
+      
+      const message = entry?.[0]?.changes?.[0]?.value?.messages?.[0];
       if (!message) return null;
 
       return {
