@@ -11,7 +11,8 @@ import {
   Bell,
   Search,
 } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
+import { OfflineBanner } from "./OfflineBanner";
 
 export function Layout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -31,6 +32,7 @@ export function Layout() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <OfflineBanner />
       {/* Top Navigation */}
       <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

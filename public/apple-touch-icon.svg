@@ -1,0 +1,58 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradientApple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9"/>
+      <stop offset="100%" style="stop-color:#0284c7"/>
+    </linearGradient>
+    <linearGradient id="bookGradientApple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#f0f9ff"/>
+    </linearGradient>
+    <linearGradient id="sunGradientApple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Rounded rectangle background for iOS -->
+  <rect width="180" height="180" rx="40" ry="40" fill="url(#bgGradientApple)"/>
+  
+  <!-- African sun -->
+  <circle cx="135" cy="45" r="18" fill="url(#sunGradientApple)"/>
+  <g stroke="#fbbf24" stroke-width="3" stroke-linecap="round" opacity="0.8">
+    <line x1="135" y1="20" x2="135" y2="27"/>
+    <line x1="158" y1="45" x2="151" y2="45"/>
+    <line x1="148" y1="32" x2="143" y2="37"/>
+    <line x1="148" y1="58" x2="143" y2="53"/>
+    <line x1="122" y1="32" x2="127" y2="37"/>
+    <line x1="122" y1="58" x2="127" y2="53"/>
+    <line x1="112" y1="45" x2="119" y2="45"/>
+    <line x1="135" y1="63" x2="135" y2="70"/>
+  </g>
+  
+  <!-- Large open book -->
+  <path d="M30 70 L90 70 L150 70 L150 140 L90 130 L30 140 Z" fill="url(#bookGradientApple)" stroke="#0284c7" stroke-width="3"/>
+  <path d="M90 70 L90 130" stroke="#0284c7" stroke-width="3"/>
+  
+  <!-- Book content -->
+  <g stroke="#0284c7" stroke-width="2" opacity="0.6">
+    <line x1="45" y1="85" x2="80" y2="85"/>
+    <line x1="100" y1="85" x2="135" y2="85"/>
+    <line x1="45" y1="95" x2="80" y2="95"/>
+    <line x1="100" y1="95" x2="135" y2="95"/>
+    <line x1="45" y1="105" x2="80" y2="105"/>
+    <line x1="100" y1="105" x2="135" y2="105"/>
+    <line x1="45" y1="115" x2="75" y2="115"/>
+    <line x1="100" y1="115" x2="130" y2="115"/>
+  </g>
+  
+  <!-- African landscape -->
+  <path d="M20 150 Q20 140 30 135 Q40 130 50 135 Q60 130 70 135 Q80 140 80 150" fill="#065f46" opacity="0.4"/>
+  <rect x="47" y="135" width="6" height="15" fill="#065f46" opacity="0.4"/>
+  
+  <path d="M140 150 Q140 145 145 142 Q150 140 155 142 Q160 145 160 150" fill="#065f46" opacity="0.4"/>
+  <rect x="152" y="142" width="3" height="8" fill="#065f46" opacity="0.4"/>
+  
+  <!-- TutaLearn text at bottom -->
+  <text x="90" y="170" font-family="Arial, sans-serif" font-size="14" font-weight="bold" text-anchor="middle" fill="white" opacity="0.9">TutaLearn</text>
+</svg>

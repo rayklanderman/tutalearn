@@ -1,0 +1,62 @@
+<svg width="192" height="192" viewBox="0 0 192 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradientPWA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9"/>
+      <stop offset="100%" style="stop-color:#0284c7"/>
+    </linearGradient>
+    <linearGradient id="bookGradientPWA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#f0f9ff"/>
+    </linearGradient>
+    <linearGradient id="sunGradientPWA" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <circle cx="96" cy="96" r="96" fill="url(#bgGradientPWA)"/>
+  
+  <!-- African sun -->
+  <circle cx="144" cy="48" r="20" fill="url(#sunGradientPWA)"/>
+  <g stroke="#fbbf24" stroke-width="3" stroke-linecap="round" opacity="0.8">
+    <line x1="144" y1="22" x2="144" y2="30"/>
+    <line x1="170" y1="48" x2="162" y2="48"/>
+    <line x1="159" y1="33" x2="153" y2="39"/>
+    <line x1="159" y1="63" x2="153" y2="57"/>
+    <line x1="129" y1="33" x2="135" y2="39"/>
+    <line x1="129" y1="63" x2="135" y2="57"/>
+    <line x1="118" y1="48" x2="126" y2="48"/>
+    <line x1="144" y1="66" x2="144" y2="74"/>
+  </g>
+  
+  <!-- Large open book -->
+  <path d="M32 74 L96 74 L160 74 L160 148 L96 138 L32 148 Z" fill="url(#bookGradientPWA)" stroke="#0284c7" stroke-width="3"/>
+  <path d="M96 74 L96 138" stroke="#0284c7" stroke-width="3"/>
+  
+  <!-- Book content -->
+  <g stroke="#0284c7" stroke-width="2" opacity="0.6">
+    <line x1="48" y1="90" x2="86" y2="90"/>
+    <line x1="106" y1="90" x2="144" y2="90"/>
+    <line x1="48" y1="100" x2="86" y2="100"/>
+    <line x1="106" y1="100" x2="144" y2="100"/>
+    <line x1="48" y1="110" x2="86" y2="110"/>
+    <line x1="106" y1="110" x2="144" y2="110"/>
+    <line x1="48" y1="120" x2="82" y2="120"/>
+    <line x1="106" y1="120" x2="140" y2="120"/>
+    <line x1="48" y1="130" x2="80" y2="130"/>
+    <line x1="106" y1="130" x2="138" y2="130"/>
+  </g>
+  
+  <!-- African landscape -->
+  <path d="M20 160 Q20 148 32 142 Q44 136 56 142 Q68 136 80 142 Q92 148 92 160" fill="#065f46" opacity="0.4"/>
+  <rect x="52" y="142" width="8" height="18" fill="#065f46" opacity="0.4"/>
+  
+  <path d="M150 160 Q150 154 156 150 Q162 148 168 150 Q174 154 174 160" fill="#065f46" opacity="0.4"/>
+  <rect x="165" y="150" width="4" height="10" fill="#065f46" opacity="0.4"/>
+  
+  <!-- Small decorative elements -->
+  <circle cx="60" cy="50" r="2" fill="white" opacity="0.3"/>
+  <circle cx="130" cy="160" r="1.5" fill="white" opacity="0.3"/>
+  <circle cx="40" cy="120" r="1" fill="white" opacity="0.2"/>
+</svg>

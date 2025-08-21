@@ -3,11 +3,10 @@
   "outputDirectory": "dist",
   "framework": "vite",
   "installCommand": "npm install",
-  "routes": [
+  "rewrites": [
     {
-      "src": "/[^.]+",
-      "dest": "/",
-      "status": 200
+      "source": "/((?!api|_next|_static|_vercel|favicon.ico|sw.js|manifest.webmanifest).*)",
+      "destination": "/"
     }
   ],
   "headers": [
@@ -33,10 +32,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "VITE_SUPABASE_URL": "@vite_supabase_url",
-    "VITE_SUPABASE_ANON_KEY": "@vite_supabase_anon_key",
-    "VITE_GROQ_API_KEY": "@vite_groq_api_key"
-  }
+  ]
 }

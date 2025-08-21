@@ -8,8 +8,9 @@ import {
   Clock,
   Award,
 } from "lucide-react";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../hooks/useAuth";
 import { contentService } from "../services/contentService";
+import { AIRecommendations } from "../components/AIRecommendations";
 
 export function HomePage() {
   const { user } = useAuth();
@@ -193,6 +194,13 @@ export function HomePage() {
           </Link>
         </div>
       </div>
+
+      {/* AI Recommendations */}
+      <AIRecommendations
+        userGrade={5}
+        completedLessons={[]}
+        preferredLanguage="en"
+      />
 
       {/* Motivational Quote */}
       <div className="bg-gradient-to-r from-secondary-500 to-accent-500 rounded-xl p-8 text-white text-center">

@@ -11,7 +11,8 @@
     "lint:fix": "eslint . --fix",
     "preview": "vite preview --host",
     "type-check": "tsc --noEmit",
-    "build:pwa": "vite build --mode production"
+    "build:pwa": "vite build --mode production",
+    "generate-favicons": "node scripts/generate-favicons.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.50.4",

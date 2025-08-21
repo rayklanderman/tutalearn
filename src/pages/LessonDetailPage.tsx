@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -11,8 +11,14 @@ import {
   Globe,
   GraduationCap,
   Target,
+  MessageCircle,
+  Brain,
+  HelpCircle,
+  Send,
+  Loader,
 } from "lucide-react";
 import { contentService, type LessonContent } from "../services/contentService";
+import { groqService } from "../services/groqService";
 
 export function LessonDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -21,6 +27,15 @@ export function LessonDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isStarted, setIsStarted] = useState(false);
+
+  // AI-powered features
+  const [aiSummary, setAiSummary] = useState<string>("");
+  const [aiQuestions, setAiQuestions] = useState<string[]>([]);
+  const [tutorMessage, setTutorMessage] = useState("");
+  const [tutorResponse, setTutorResponse] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [showAiTutor, setShowAiTutor] = useState(false);
+  const [selectedLanguage, setSelectedLanguage] = useState<"en" | "sw">("en");
 
   useEffect(() => {
     const loadLesson = async () => {
@@ -38,6 +53,8 @@ export function LessonDetailPage() {
           setError("Lesson not found");
         } else {
           setLesson(lessonData);
+          // Auto-generate AI content when lesson loads
+          generateAiContent(lessonData);
         }
       } catch (err) {
         console.error("Error loading lesson:", err);
@@ -48,7 +65,102 @@ export function LessonDetailPage() {
     };
 
     loadLesson();
-  }, [id]);
+  }, [id, generateAiContent]);
+
+  // Generate AI-powered content for the lesson
+  const generateAiContent = useCallback(
+    async (lessonData: LessonContent) => {
+      try {
+        setAiLoading(true);
+
+        // Generate AI summary
+        const summaryPrompt = `Please provide a brief, engaging summary of this lesson in ${
+          selectedLanguage === "sw" ? "Kiswahili" : "English"
+        }:
+      
+      Title: ${
+        selectedLanguage === "sw"
+          ? lessonData.title_sw || lessonData.title
+          : lessonData.title
+      }
+      Content: ${
+        selectedLanguage === "sw"
+          ? lessonData.content_sw || lessonData.content
+          : lessonData.content
+      }`;
+
+        const summary = await groqService.askTuta({
+          question: summaryPrompt,
+          language: selectedLanguage,
+          context: {
+            subject: lessonData.subject?.name,
+            gradeLevel: lessonData.grade_level,
+          },
+        });
+        setAiSummary(summary);
+
+        // Generate practice questions
+        const questionsPrompt = `Based on this lesson content, create 3 practice questions that help students understand the concepts better. Format as a numbered list:
+      
+      ${
+        selectedLanguage === "sw"
+          ? lessonData.content_sw || lessonData.content
+          : lessonData.content
+      }`;
+
+        const questions = await groqService.askTuta({
+          question: questionsPrompt,
+          language: selectedLanguage,
+          context: {
+            subject: lessonData.subject?.name,
+            gradeLevel: lessonData.grade_level,
+          },
+        });
+
+        // Parse questions into array
+        const questionsList = questions
+          .split("\n")
+          .filter((line) => line.trim().match(/^\d+\./));
+        setAiQuestions(questionsList);
+      } catch (error) {
+        console.error("Error generating AI content:", error);
+      } finally {
+        setAiLoading(false);
+      }
+    },
+    [selectedLanguage]
+  );
+
+  // Handle AI tutor chat
+  const handleTutorQuestion = async () => {
+    if (!tutorMessage.trim() || !lesson) return;
+
+    try {
+      setAiLoading(true);
+      const response = await groqService.askTuta({
+        question: tutorMessage,
+        language: selectedLanguage,
+        context: {
+          subject: lesson.subject?.name,
+          gradeLevel: lesson.grade_level,
+          previousMessages: [
+            `Lesson: ${lesson.title}`,
+            `Content: ${lesson.content.substring(0, 500)}...`,
+          ],
+        },
+      });
+
+      setTutorResponse(response);
+      setTutorMessage("");
+    } catch (error) {
+      console.error("Error getting tutor response:", error);
+      setTutorResponse(
+        "Sorry, I'm having trouble right now. Please try again!"
+      );
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
@@ -100,7 +212,7 @@ export function LessonDetailPage() {
             The lesson you're looking for doesn't exist or couldn't be loaded.
           </p>
           <Link
-            to="/lessons"
+            to="/app/lessons"
             className="inline-flex items-center gap-2 bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -125,7 +237,7 @@ export function LessonDetailPage() {
           </button>
           <div className="h-6 w-px bg-gray-300"></div>
           <Link
-            to="/lessons"
+            to="/app/lessons"
             className="text-primary-600 hover:text-primary-700 transition-colors"
           >
             All Lessons
@@ -259,6 +371,145 @@ export function LessonDetailPage() {
             <p className="text-gray-600 mb-4">
               Click "Start Lesson" above to begin this educational journey.
             </p>
+          </div>
+        )}
+      </div>
+
+      {/* AI-Powered Features */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* AI Summary */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <Brain className="h-6 w-6 text-purple-600" />
+            <h3 className="text-lg font-semibold text-gray-900">AI Summary</h3>
+            <select
+              value={selectedLanguage}
+              onChange={(e) =>
+                setSelectedLanguage(e.target.value as "en" | "sw")
+              }
+              className="ml-auto border border-gray-300 rounded px-2 py-1 text-sm"
+              aria-label="Select language for AI summary"
+            >
+              <option value="en">🇬🇧 English</option>
+              <option value="sw">🇹🇿 Kiswahili</option>
+            </select>
+          </div>
+
+          {aiLoading && !aiSummary ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader className="h-6 w-6 animate-spin text-purple-600" />
+              <span className="ml-2 text-gray-600">
+                Generating AI summary...
+              </span>
+            </div>
+          ) : aiSummary ? (
+            <div className="prose prose-sm max-w-none">
+              <p className="text-gray-700 leading-relaxed">{aiSummary}</p>
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <Brain className="h-12 w-12 text-gray-300 mx-auto mb-2" />
+              <p className="text-gray-500">AI summary will appear here</p>
+            </div>
+          )}
+        </div>
+
+        {/* AI Practice Questions */}
+        <div className="bg-white rounded-lg shadow p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <HelpCircle className="h-6 w-6 text-blue-600" />
+            <h3 className="text-lg font-semibold text-gray-900">
+              Practice Questions
+            </h3>
+          </div>
+
+          {aiLoading && aiQuestions.length === 0 ? (
+            <div className="flex items-center justify-center py-8">
+              <Loader className="h-6 w-6 animate-spin text-blue-600" />
+              <span className="ml-2 text-gray-600">
+                Generating questions...
+              </span>
+            </div>
+          ) : aiQuestions.length > 0 ? (
+            <div className="space-y-3">
+              {aiQuestions.map((question, index) => (
+                <div key={index} className="p-3 bg-blue-50 rounded-lg">
+                  <p className="text-gray-800">{question}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <HelpCircle className="h-12 w-12 text-gray-300 mx-auto mb-2" />
+              <p className="text-gray-500">
+                Practice questions will appear here
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* AI Tutor Chat */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <MessageCircle className="h-6 w-6 text-green-600" />
+            <h3 className="text-lg font-semibold text-gray-900">
+              Ask Tuta about this lesson
+            </h3>
+          </div>
+          <button
+            onClick={() => setShowAiTutor(!showAiTutor)}
+            className="text-green-600 hover:text-green-700 transition-colors"
+          >
+            {showAiTutor ? "Hide" : "Show"} Tutor
+          </button>
+        </div>
+
+        {showAiTutor && (
+          <div className="space-y-4">
+            {tutorResponse && (
+              <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-lg">
+                <div className="flex items-start gap-3">
+                  <MessageCircle className="h-5 w-5 text-green-600 mt-0.5" />
+                  <div>
+                    <p className="font-medium text-green-800 mb-1">
+                      Tuta says:
+                    </p>
+                    <p className="text-green-700">{tutorResponse}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            <div className="flex gap-3">
+              <input
+                type="text"
+                placeholder="Ask Tuta any question about this lesson..."
+                value={tutorMessage}
+                onChange={(e) => setTutorMessage(e.target.value)}
+                onKeyPress={(e) => e.key === "Enter" && handleTutorQuestion()}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                disabled={aiLoading}
+              />
+              <button
+                onClick={handleTutorQuestion}
+                disabled={!tutorMessage.trim() || aiLoading}
+                className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center gap-2"
+              >
+                {aiLoading ? (
+                  <Loader className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Send className="h-4 w-4" />
+                )}
+                Ask
+              </button>
+            </div>
+
+            <div className="text-xs text-gray-500">
+              💡 Try asking: "Can you explain this concept differently?" or
+              "Give me more examples"
+            </div>
           </div>
         )}
       </div>

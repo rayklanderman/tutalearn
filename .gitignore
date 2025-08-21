@@ -31,3 +31,5 @@ workbox-*
 *.njsproj
 *.sln
 *.sw?
+
+.vercel
